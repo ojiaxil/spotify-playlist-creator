@@ -1,7 +1,7 @@
 import json
 import requests
-from reqests.models import Response
-from track import Track
+from requests.models import Response
+from song import Song
 from playlist import Playlist
 
 # this class serves as the client class which works with the Spotify API
@@ -32,20 +32,20 @@ class Client:
         url = f"https://api.spotify.com/v1//me/player/recently-played?limit={limit}"
         response = self._get_api_request(url)
         response_json = response.json()
-        songs = [Track(track["track"]["name"], track["track"]["id"], track["track"]["artists"][0]["name"]) for track in response_json["items"]]
+        songs = [Song(track["track"]["name"], track["track"]["id"], track["track"]["artists"][0]["name"]) for track in response_json["items"]]
         return songs
     
     # get list of recommended songs from reference tracks
 
-    def recommendations(self, ref_tracks, limit = 50):
-        ref_tracks_url = ""
-        for ref_track in ref_tracks:
-            ref_tracks_url += ref_track.id + ','
-        ref_tracks_url = ref_tracks_url[:-1]
-        url = f"https://api.spotify.com/v1/recommendations?seed_tracks={ref_tracks_url}&limit={limit}"
+    def recommendations(self, ref_songs, limit = 50):
+        ref_songs_url = ""
+        for ref_song in ref_songs:
+            ref_tracks_url += ref_song.id + ','
+        ref_songs_url = ref_songs_url[:-1]
+        url = f"https://api.spotify.com/v1/recommendations?seed_tracks={ref_songs_url}&limit={limit}"
         response = self._get_api_request(url)
         response_json = response.json()
-        songs = [Track(track["name"], track["id"], track["artists"][0]["name"]) for track in response_json["tracks"]]
+        songs = [Song(track["name"], track["id"], track["artists"][0]["name"]) for track in response_json["tracks"]]
         return songs
     
     # create playlist
