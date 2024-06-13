@@ -1,6 +1,6 @@
 import json
 import requests
-from requests.models import Response
+from reqests.models import Response
 from track import Track
 from playlist import Playlist
 
